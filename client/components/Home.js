@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Button, FlatList } from "react-native";
 import { Card, FAB } from "react-native-paper";
 
-function Home(props) {
+function Home() {
   // const[name, setName]= useState('Davenstar Limited')
-  const data = [
-    { id: "1", title: "First Title", body: "First Body" },
-    { id: "2", title: "Second Title", body: "Second Body" },
-  ];
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch("http://192.168.0.50:5000/home", {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      });
+  }, []);
 
   const renderData = (item) => {
     return (
@@ -27,7 +34,7 @@ function Home(props) {
         }}
         keyExtractor={(item) => `${item.id}`}
       />
-      <FAB style={StyleSheet.fab}/>
+      {/* <FAB style={StyleSheet.fab}/> */}
     </View>
   );
 }
